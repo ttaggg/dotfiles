@@ -1,0 +1,27 @@
+#zsh
+alias rezsh='source $ZSH/.zshrc'
+alias zsh_conf='$EDITOR $ZSH/.zshrc'
+alias zsh_fn='$EDITOR $ZSH/functions'
+alias zsh_al='$EDITOR $ZSH/aliases'
+
+# Navigation
+alias c='cd'
+alias ls='ls --color=auto'
+alias lsf='ls -ltrah'
+alias ex='exit'
+alias ff='find . -type f -name'
+alias grep='grep --color'
+alias cl='clear'
+# Git
+alias gs='git status'
+alias ga='git add'
+
+# tmux
+alias tmuxconf='$EDITOR $HOME/.tmux.conf'
+alias tls='tmux ls'
+alias tdet='tmux detach'
+# alias =''
+
+# Apps
+alias brew='/opt/homebrew/bin/brew'
+
