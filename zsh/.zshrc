@@ -16,6 +16,7 @@ antigen apply
 # Exports
 export EDITOR='nvim'
 export PATH="$PATH:/usr/local/go/bin"
+export PATH="/opt/homebrew/bin:$PATH"
 
 # Bindings
 bindkey '\e[A' history-search-backward
