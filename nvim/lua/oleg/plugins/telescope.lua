@@ -24,4 +24,5 @@ telescope.setup({
   },
 })
 
-telescope.load_extension("fzf")
+-- load fzf extension safely
+pcall(telescope.load_extension, "fzf")

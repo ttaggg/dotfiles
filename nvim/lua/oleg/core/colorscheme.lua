@@ -16,38 +16,39 @@ local specs = {
 	},
 }
 
-require("nightfox").setup({
-	options = {
-		-- Compiled file's destination location
-		compile_path = vim.fn.stdpath("cache") .. "/nightfox",
-		compile_file_suffix = "_compiled", -- Compiled file suffix
-		transparent = false, -- Disable setting background
-		terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-		dim_inactive = false, -- Non focused panes set to alternative background
-		module_default = true, -- Default enable value for modules
-		styles = { -- Style to be applied to different syntax groups
-			comments = "NONE", -- Value is any valid attr-list value `:help attr-list`
-			conditionals = "NONE",
-			constants = "NONE",
-			functions = "NONE",
-			keywords = "NONE",
-			numbers = "NONE",
-			operators = "NONE",
-			strings = "NONE",
-			types = "NONE",
-			variables = "NONE",
+-- Protected call to setup nightfox (in case plugins aren't installed yet)
+local status_ok, nightfox = pcall(require, "nightfox")
+if status_ok then
+	nightfox.setup({
+		options = {
+			-- Compiled file's destination location
+			compile_path = vim.fn.stdpath("cache") .. "/nightfox",
+			compile_file_suffix = "_compiled", -- Compiled file suffix
+			transparent = false, -- Disable setting background
+			terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+			dim_inactive = false, -- Non focused panes set to alternative background
+			module_default = true, -- Default enable value for modules
+			styles = { -- Style to be applied to different syntax groups
+				comments = "NONE", -- Value is any valid attr-list value `:help attr-list`
+				conditionals = "NONE",
+				constants = "NONE",
+				functions = "NONE",
+				keywords = "NONE",
+				numbers = "NONE",
+				operators = "NONE",
+				strings = "NONE",
+				types = "NONE",
+				variables = "NONE",
+			},
+			modules = { -- List of various plugins and additional options
+				-- ...
+			},
 		},
-		modules = { -- List of various plugins and additional options
-			-- ...
-		},
-	},
-	palettes = {},
-	specs = specs,
-	groups = {},
-})
-
-local status, _ = pcall(vim.cmd, "colorscheme duskfox")
-if not status then
-	print("Colorscheme not found!") -- print error if colorscheme not installed
-	return
+		palettes = {},
+		specs = specs,
+		groups = {},
+	})
 end
+
+-- Set colorscheme (silently fails if not installed yet)
+pcall(vim.cmd, "colorscheme duskfox")
