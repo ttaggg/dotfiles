@@ -1,23 +1,67 @@
-# pyclean
-function pyclean() {
-  find "${@:-.}" -type f -name "*.py[co]" -delete  find "${@:-.}" -type d -name "__pycache__" -delete
-  find "${@:-.}" -depth -type d -name ".mypy_cache" -exec rm -r "{}" +
-  find "${@:-.}" -depth -type d -name ".pytest_cache" -exec rm -r "{}" +
+# Clean pyton cache.
+pyclean() {
+  if [ -z "$1" ]; then
+    echo "Usage: clean_pycache <directory>"
+    return 1
+  fi
+
+  TARGET_DIR="$1"
+
+  if [ ! -d "$TARGET_DIR" ]; then
+    echo "Error: Directory '$TARGET_DIR' does not exist."
+    return 1
+  fi
+
+  echo "Cleaning Python cache files in '$TARGET_DIR'..."
+
+  # Find and remove __pycache__ directories
+  find "$TARGET_DIR" -type d -name "__pycache__" -exec rm -rf {} +
+
+  # Find and remove .pyc and .pyo files
+  find "$TARGET_DIR" -type f \( -name "*.pyc" -o -name "*.pyo" \) -delete
+
+  echo "Cleanup complete."
 }
 
-# make dir and cd there
+# Forward ports.
+forward() {
+    local port=$1
+    if [[ -z "$port" ]]; then
+        echo "Usage: forward <port>"
+        return 1
+    fi
+    
+    # Check if the port is already in use
+    local pid
+    pid=$(lsof -ti :$port)
+    
+    if [[ -n "$pid" ]]; then
+        echo "Port $port is already in use by process $pid. Terminating it..."
+        kill -9 "$pid"
+        sleep 1  # Give it a moment to release the port
+    fi
+    
+    # Start the new forwarding process
+    ssh -L "$port:127.0.0.1:$port" magnes@sl06.vc.in.tum.de -N &
+    local new_pid=$!
+    echo "Port forwarding on port $port is running in the background. PID: $new_pid"
+}
+
+
+# Make directory and cd there.
 mkcd ()
 {
     mkdir -p -- "$1" &&
        cd -P -- "$1"
 }
 
-# tmux
+# Attach tmux.
 tattach ()
 {
     tmux attach -t "$1"
 }
 
+# Kill tmux.
 tkill ()
 {
     tmux kill-session -t "$1"
