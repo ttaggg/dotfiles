@@ -9,7 +9,12 @@ echo "==> Setting up dotfiles on branch: $BRANCH"
 # Switch to the specified branch
 echo "==> Switching to branch: $BRANCH"
 cd "$DOTFILES_DIR"
-git checkout "$BRANCH"
+if git show-ref --verify --quiet refs/heads/"$BRANCH"; then
+    git checkout "$BRANCH"
+else
+    echo "==> Branch $BRANCH does not exist, creating it..."
+    git checkout -b "$BRANCH"
+fi
 
 # Install required packages
 echo "==> Installing packages..."
