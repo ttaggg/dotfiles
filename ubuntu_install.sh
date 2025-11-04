@@ -59,7 +59,7 @@ git clone --depth 1 https://github.com/wbthomason/packer.nvim \
 # Change default shell to zsh
 if [ "$SHELL" != "$(which zsh)" ]; then
     echo "==> Changing default shell to zsh..."
-    chsh -s $(which zsh)
+    chsh -s $(which zsh) $(whoami)
 fi
 
 echo ""
